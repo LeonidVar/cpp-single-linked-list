@@ -1,5 +1,3 @@
-#pragma once
-
 #include <cassert>
 #include <cstddef>
 #include <string>
@@ -89,14 +87,15 @@ public:
     // Обменивает содержимое списков за время O(1)
     void swap(SingleLinkedList& other) noexcept {
         // Реализуйте обмен содержимого списков самостоятельно
-        SingleLinkedList tmp;
+        std::swap(this, other);
+        /*SingleLinkedList tmp;
         tmp.size_ = this->size_;
         tmp.head_.next_node = this->head_.next_node;
         this->size_ = other.size_;
         this->head_.next_node = other.head_.next_node;
         other.size_ = tmp.size_;
         other.head_.next_node = tmp.head_.next_node;
-        tmp.head_.next_node = nullptr;
+        tmp.head_.next_node = nullptr;*/
     }
 
 
@@ -184,8 +183,7 @@ public:
         // Возвращает ссылку на самого себя
         // Инкремент итератора, не указывающего на существующий элемент списка, приводит к неопределённому поведению
         BasicIterator& operator++() noexcept {
-
-            // Заглушка. Реализуйте оператор самостоятельно
+            assert(this->node_);
             this->node_ = this->node_->next_node;
             return *this;
         }
@@ -205,9 +203,7 @@ public:
         // Вызов этого оператора у итератора, не указывающего на существующий элемент списка,
         // приводит к неопределённому поведению
         [[nodiscard]] reference operator*() const noexcept {
-
-            // Не реализовано
-            // Заглушка. Реализуйте оператор самостоятельно
+            assert(this->node_);
             return node_->value;
         }
 
@@ -215,8 +211,7 @@ public:
         // Вызов этого оператора у итератора, не указывающего на существующий элемент списка,
         // приводит к неопределённому поведению
         [[nodiscard]] pointer operator->() const noexcept {
-
-            // Заглушка. Реализуйте оператор самостоятельно
+            assert(this->node_);
             return &(node_->value);
         }
 
@@ -315,7 +310,7 @@ public:
      * Если при создании элемента будет выброшено исключение, список останется в прежнем состоянии
      */
     Iterator InsertAfter(ConstIterator pos, const Type& value) {
-        // Заглушка. Реализуйте метод самостоятельно
+        assert(pos.node_);
         auto tmp = new Node(value, pos.node_->next_node);
         pos.node_->next_node = tmp;
         ++size_;
@@ -338,6 +333,7 @@ public:
      */
     Iterator EraseAfter(ConstIterator pos) noexcept {
         // Заглушка. Реализуйте метод самостоятельно
+        assert(pos.node_);
         if (pos != this->cend())
         {
             auto tmp = pos.node_->next_node;
@@ -363,6 +359,7 @@ template <typename Type>
 bool operator==(const SingleLinkedList<Type>& lhs, const SingleLinkedList<Type>& rhs) {
     // Заглушка. Реализуйте сравнение самостоятельно
     return std::equal(lhs.begin(), lhs.end(), rhs.begin());
+
 }
 
 template <typename Type>
@@ -394,3 +391,4 @@ bool operator>=(const SingleLinkedList<Type>& lhs, const SingleLinkedList<Type>&
     // Заглушка. Реализуйте сравнение самостоятельно
     return !(lhs < rhs);;
 }
+
